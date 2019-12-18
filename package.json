@@ -1,0 +1,23 @@
+{
+  "name": "pets-for-adoption-api",
+  "version": "1.0.0",
+  "description": "an app using petfinder api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buhtla85/third.git"
+  },
+  "author": "Tamara Naunovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buhtla85/third/issues"
+  },
+  "homepage": "https://github.com/buhtla85/third#readme",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
