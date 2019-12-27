@@ -12,7 +12,7 @@ export interface petFinderJson {
     }
 }
 
-interface Animal {
+export interface Animal {
     id: number,
     organization_id: string,
     url: string,
