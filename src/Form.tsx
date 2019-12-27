@@ -8,7 +8,7 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { headers } from "../sensitive";
-import { AnimalCard } from "./Animal";
+import { AnimalCard } from "./AnimalCard";
 
 
 // 1. headers: Headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Your API Token here' });
