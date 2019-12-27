@@ -1,5 +1,5 @@
 import * as React from "react";
-import { petFinderJson } from "./myTypes";
+import { petFinderJson, Animal } from "./myTypes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -8,7 +8,13 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { headers } from "../sensitive";
+import { AnimalCard } from "./Animal";
 
+
+// 1. headers: Headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Your API Token here' });
+// 2. options: RequestOptions = new RequestOptions({ headers: this.headers });
+
+// 3. fetch(url, { headers }).then(response => response.json()).then(data => console.log(data));
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -25,42 +31,50 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Form = () => {
     const classes = useStyles(createStyles);
     const [type, setType] = React.useState("");
-    const [location, setLocation] = React.useState("");
+    const [postCode, setPostCode] = React.useState("");
     const [animals, setAnimals] = React.useState([]);
+    const [errMsg, setErrorMsg] = React.useState("");
 
-    const handleTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => setType(event.target.value as string);
+    const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setType(event.target.value);
+        console.log(type);
+    };
 
-    const handleLocationChange = (event: React.ChangeEvent<{ value: unknown }>) => setLocation(event.target.value as string);
+    const handlePostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPostCode(event.target.value as string);
+        console.log(postCode);
+    };
 
-    // const getAnimals = async () => {
-    //     const response = await fetch(`https://api.petfinder.com/v2/animals?type=bird&page=2`, {headers});
-    //     const data: petFinderJson = await response.json();
-    //     setAnimals(data.animals);
-    //     console.log(data.animals)
-    // }
-
-    // React.useEffect(() => {
-    //     getAnimals();
-    // }, []);
+    const getAnimals = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const response = await fetch(`https://api.petfinder.com/v2/animals?type=${type}&location=${postCode}`, {headers});
+        const data: petFinderJson = await response.json();
+        setAnimals(data.animals);
+        console.log(data.animals)
+    }
 
     return (
         <React.Fragment>
-            <form>
+            <form action="" onSubmit={getAnimals}>
                 <FormControl className={classes.formControl}>
-                    <InputLabel id="animal_type">Animal Type</InputLabel>
-                        <Select id="type" name="type" value={type} onChange={handleTypeChange} >
+                    <InputLabel id="animal_type" htmlFor="type">Animal Type</InputLabel>
+                        <Select labelId="animal_type" id="type" name="type" value={type} onChange={handleTypeChange}>
                             <MenuItem value={"dog"}>Dog</MenuItem>
                             <MenuItem value={"cat"}>Cat</MenuItem>
                             <MenuItem value={"bird"}>Bird</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl}>
-                        <TextField required id="location" label="Required" value={location} placeholder="Enter a US city" name="location" onChange={handleLocationChange}/>
+                        <TextField required id="postCode" label="Postcode" value={postCode} placeholder="Enter a US postcode" onChange={handlePostChange}/>
                     </FormControl>
                 <div style={{textAlign: 'center', paddingTop: "1rem"}}>
                     <Button variant="outlined" color="primary" type="submit">Search</Button>
                 </div> 
             </form>
+            {animals.map((animal: Animal) => (
+                <AnimalCard pet={animal} />
+            )        
+        )}
         </React.Fragment>
     )
 }
