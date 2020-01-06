@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { headers } from "../sensitive";
 import { AnimalCard } from "./AnimalCard";
+import { GridList, GridListTile } from "@material-ui/core";
 
 
 // 1. headers: Headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Your API Token here' });
@@ -71,10 +72,16 @@ export const Form = () => {
                     <Button variant="outlined" color="primary" type="submit">Search</Button>
                 </div> 
             </form>
-            {animals.map((animal: Animal) => (
-                <AnimalCard pet={animal} />
-            )        
-        )}
+                <GridList cols={2}>
+                    {animals.map((animal: Animal, idx: number) => {
+                        return (
+                            <GridListTile key={idx}>
+                                <AnimalCard pet={animal}/>
+                            </GridListTile>
+                        )
+                    }      
+                )}
+                </GridList>
         </React.Fragment>
     )
 }
