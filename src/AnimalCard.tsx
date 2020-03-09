@@ -26,10 +26,10 @@ export const AnimalCard = (props: {pet: Animal}) => {
     return (
         <Card className={classes.card}>
             <CardActionArea>
-                <CardMedia className={classes.media} image={pet.photos[0].medium} title="Contemplative Reptile"/>
+                <CardMedia className={classes.media} image={pet.photos[0]?.medium} title="Contemplative Reptile"/>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">{pet.name}</Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">{pet.description}</Typography>
+                        <Typography variant="body2" color="textSecondary" component="p" noWrap>{pet.description}</Typography>
                     </CardContent>
             </CardActionArea>
         </Card>   
