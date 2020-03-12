@@ -11,23 +11,26 @@ interface petFinderResponseToken {
     access_token: string
 }
 
+let body = "grant_type=client_credentials&client_id={CLIENT-ID}&client_secret={CLIENT-SECRET}"
+
 const fetchToken = async () => {
     const hitServer = await fetch("https://api.petfinder.com/v2/oauth2/token", {
         method: "POST",
         body: `grant_type=client_credentials&client_id=${apiKey}&client_secret=${apiSecret}`,
         headers: {
-            "Content-Type": "'application/x-www-form-urlencoded'"
+            "Content-Type": "application/x-www-form-urlencoded"
         }
     })
     const response: petFinderResponseToken = await hitServer.json();
-    window.localStorage.setItem("token", response.access_token)
+    console.log(response.access_token)
+    //window.localStorage.setItem("token", response.access_token)
 }
 
 export class App extends React.Component {
 
     componentDidMount() {
-        if (window.localStorage.length === 0) {
-            fetchToken();
+        if(window.localStorage.length === 0) {
+            console.log("empty")
         }
     }
     render(){
