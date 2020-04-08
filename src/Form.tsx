@@ -1,90 +1,69 @@
 import * as React from "react";
-import { petFinderJson, Animal } from "./myTypes";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid"
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { headers } from "../sensitive";
 import { AnimalCard } from "./AnimalCard";
-import { GridList, GridListTile } from "@material-ui/core";
+import { Spinner } from "./Spinner";
+import { AlertMsg } from "./Alert";
+import { petFinderJson, Animal } from "./myTypes";
 
-
-// 1. headers: Headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Your API Token here' });
-// 2. options: RequestOptions = new RequestOptions({ headers: this.headers });
-
-// 3. fetch(url, { headers }).then(response => response.json()).then(data => console.log(data));
-
-const useStyles = makeStyles((theme: Theme) => 
-    createStyles({
-        formControl: {
-            margin: theme.spacing(1),
-            minWidth: 220,
-        },
-        selectEmpty: {
-            marginTop: theme.spacing(2)
-        }
-    })
-);
-
-export const Form = () => {
-    const classes = useStyles(createStyles);
-    const [type, setType] = React.useState("");
-    const [postCode, setPostCode] = React.useState("");
-    const [animals, setAnimals] = React.useState([]);
-    const [errMsg, setErrorMsg] = React.useState("");
-
-    const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setType(event.target.value);
-        console.log(type);
-    };
-
-    const handlePostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPostCode(event.target.value as string);
-        console.log(postCode);
-    };
-
-    const getAnimals = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const response = await fetch(`https://api.petfinder.com/v2/animals?type=${type}&location=${postCode}`, {headers});
-        const data: petFinderJson = await response.json();
-        setAnimals(data.animals);
-        console.log(data.animals)
-    }
-
-    return (
-        <React.Fragment>
-            <form action="" onSubmit={getAnimals}>
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="animal_type" htmlFor="type">Animal Type</InputLabel>
-                        <Select labelId="animal_type" id="type" name="type" value={type} onChange={handleTypeChange}>
-                            <MenuItem value={"dog"}>Dog</MenuItem>
-                            <MenuItem value={"cat"}>Cat</MenuItem>
-                            <MenuItem value={"bird"}>Bird</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <TextField required id="postCode" label="Postcode" value={postCode} placeholder="Enter a US postcode" onChange={handlePostChange}/>
-                    </FormControl>
-                <div style={{textAlign: 'center', paddingTop: "1rem"}}>
-                    <Button variant="outlined" color="primary" type="submit">Search</Button>
-                </div> 
-            </form>
-                <GridList cols={2}>
-                    {animals.map((animal: Animal, idx: number) => {
-                        return (
-                            <GridListTile key={idx}>
-                                <AnimalCard pet={animal}/>
-                            </GridListTile>
-                        )
-                    }      
-                )}
-                </GridList>
-        </React.Fragment>
-    )
+interface IStateForm {
+    loading: boolean,
+    errMsg: "",
+    animalsArr: Animal[]
 }
+
+
+export class Form extends React.Component {
+    state = {loading: false};
+    render() {
+        return (
+            <>
+            <AlertMsg />
+            <Container maxWidth="sm">
+                <div style={{marginTop: "4rem"}}>
+                    <form action="">
+                        <Grid container spacing={3} justify="center">
+                            <Grid item>
+                                <FormControl style={{minWidth: 120}}>
+                                    <InputLabel id="demo-simple-select-outlined-label">Breed</InputLabel>
+                                        <Select labelId="demo-simple-select-outlined-label" id="demo-simple-select-outlined" value="">
+                                            <MenuItem value={10}>Ten</MenuItem>
+                                            <MenuItem value={20}>Twenty</MenuItem>
+                                            <MenuItem value={30}>Thirty</MenuItem>
+                                        </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <FormControl style={{minWidth: 120}}>
+                                    <TextField required  id="standard-basic" label="US postcode" placeholder="Enter a US postcode"/>
+                                </FormControl>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="primary" type="submit" style={{marginTop: "0.8rem"}}>Search</Button>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </div>
+            </Container>
+            <Container maxWidth="md" style={{paddingTop: "7rem", paddingBottom: "7rem"}}>
+                {this.state.loading ? <Spinner /> : ""}
+                    <Grid container spacing={4}>
+                    
+                        {/* This is where the map() should be inserted */}
+                    </Grid>
+            </Container>
+            </>
+        )
+    }
+}
+
+
 
 
 
