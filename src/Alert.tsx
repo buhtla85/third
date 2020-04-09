@@ -8,12 +8,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const AlertMsg = () => {
+interface messageProp {
+    msg: string
+}
+
+export const AlertMsg = (props: messageProp) => {
     const classes = useStyles(createStyles);
     return (
         <div style={{margin: "0 auto", width: "50%"}}>
             <div className={classes.root}>
-                <Alert severity="error">This is an error alert — check it out!</Alert>
+                <Alert severity="error">{props.msg}</Alert>
             </div>
         </div>
     )
