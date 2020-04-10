@@ -41,7 +41,6 @@ const fetchToken = async () => {
     window.localStorage.setItem("token", response.access_token);
 }
 
-
 export class Form extends React.Component <{}, IStateForm> {
     constructor(props: any) {
         super(props);
@@ -65,6 +64,13 @@ export class Form extends React.Component <{}, IStateForm> {
 
     handleInputPostCode = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({postCode: e.target.value});
 
+    handlingAlertAndSpinner = (errString: string) => {
+        this.setState({loading: false, errMsg: errString, isError: true});
+        setTimeout(() => {
+            this.setState({errMsg: "", isError: false})
+        }, 5000);
+    };
+
     fetchAnimals = async () => {
         this.setState({loading: true});
         const token = window.localStorage.getItem("token")
@@ -79,20 +85,11 @@ export class Form extends React.Component <{}, IStateForm> {
     
         if (hitServer.status === 401) {
             fetchToken();
-            this.setState({loading: false, errMsg: "Access to server stoped. Please enter your values again in a few seconds...", isError: true});
-            setTimeout(() => {
-                this.setState({errMsg: "", isError: false})
-            }, 5000); //there is a lot of repeating here... make a function!
+            this.handlingAlertAndSpinner("Access to server stoped. Please enter your values again in a few seconds...");
         } else if (hitServer.status === 400) {
-            this.setState({loading: false, errMsg: "Your request contains invalid parameters. Please enter valid values.", isError: true});
-            setTimeout(() => {
-                this.setState({errMsg: "", isError: false})
-            }, 5000);
+            this.handlingAlertAndSpinner("Your request contains invalid parameters. Please enter valid values.");
         } else if (hitServer.status > 401 && hitServer.status < 600) {
-            this.setState({loading: false, errMsg: "Your request contains invalid parameters. Please enter valid values.", isError: true});
-            setTimeout(() => {
-                this.setState({errMsg: "", isError: false})
-            }, 5000);
+            this.handlingAlertAndSpinner("Your request contains invalid parameters. Please enter valid values.");
         } else {
             this.setState({loading: false, animalsArr: response.animals});
             console.log(response)
@@ -134,9 +131,9 @@ export class Form extends React.Component <{}, IStateForm> {
                     <Grid container spacing={4}>
                          { this.state.animalsArr.map((animal: Animal, idx: number) => {
                              return (
-                                <div key={idx}>
+                                    //this is where the div with key attribute should be inserted, but when added, it corupts the layout...
                                     <AnimalCard animal={animal}/>
-                                </div>
+                                   
                                 )
                          }) }
                     </Grid>
