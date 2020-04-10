@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export const AnimalCard = (props: { animal: Animal }) => {
     const classes = useStyles(createStyles);
     const { animal } = props;
-    const defaultString = "No data provided";
-    const defaultDescription = `Sorry, there is no description for ${animal.name}. Please make sure to check phone, email or link below.`
+    const defaultString = "No data";
+    const defaultDescription = `Sorry, there is no description for ${animal.name}. Please make sure to check info link below.`
     const defaultImg = "https://afmec.org/images/no-image-available-icon.jpg";
 
     const checkForPhoto = (arr: [{small: string, medium: string, large: string, full: string;}]) => {
@@ -52,8 +52,10 @@ export const AnimalCard = (props: { animal: Animal }) => {
                 <Card className={classes.card}>
                     <CardMedia className={classes.cardMedia} image={checkForPhoto(animal.photos)} title="Image Title" />
                     <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">Name: {animal.name}</Typography>
-                        <Typography>{animal.description === null ? defaultDescription : animal.description}</Typography> 
+                        <Typography gutterBottom variant="h5" component="h2">{animal.name}</Typography>
+                        <Typography component="h5">Gender: {animal.gender === null ? defaultString : animal.gender}</Typography>
+                        <Typography component="h5">Age: {animal.age === null ? defaultString : animal.age}</Typography>
+                        <Typography noWrap component="p">{animal.description === null ? defaultDescription : animal.description}</Typography> 
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary">
