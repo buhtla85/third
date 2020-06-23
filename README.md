@@ -7,5 +7,5 @@ If you are interested to take a closer look, clone this repo or download the .zi
 ## Screenshots:
 <img src="images/findpet1.png" width="300" /> <img src="images/findpet3.png" width="300" />
 
-## Technologies
+## Technologies:
 React, Typescript, Material-UI
